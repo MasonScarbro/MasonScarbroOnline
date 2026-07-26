@@ -29,13 +29,10 @@
                                 @foreach (var tech in IconHelper.Split(project.TechStack))
                                 {
                                     var iconClass = IconHelper.GetIconClass(tech);
-                                    <div class="flex items-center gap-1.5 bg-gray-100 rounded-full px-3 py-1" title="@tech">
-                                        @if (iconClass != null)
-                                        {
-                                            <i class="@iconClass colored text-lg"></i>
-                                        }
-                                        <span class="text-sm text-gray-700">@tech</span>
-                                    </div>
+                                    <div class="flex items-center gap-1.5 bg-gray-100 rounded-full px-3 py-1" title="@tech"> @if (iconClass != null) {
+                                        <i class="@iconClass colored text-lg"></i>
+                                    }
+                                    <span class="text-sm text-gray-700">@tech</span> </div>
                                 }
                             </div>
                         </div>
@@ -80,18 +77,15 @@
                                         {
                                             <p class="text-gray-700 text-base">Come back later for more information.</p>
                                         }
-                                        else if (experience.Description.Split('*').Length > 1)
+                                        else if (experience.DescriptionLines.Any())
                                         {
-                                            @foreach (var bullet in experience.Description.Split('*').Skip(1))
+                                            foreach (var line in experience.DescriptionLines)
                                             {
-                                                <p class="text-gray-700 text-base">• @bullet.Trim()</p>
-                                            }
-                                        }
-                                        else if (experience.Description.Split('•').Length > 1)
-                                        {
-                                            @foreach (var bullet in experience.Description.Split('•').Skip(1))
-                                            {
-                                                <p class="text-gray-700 text-base">• @bullet.Trim()</p>
+                                                if (line != string.Empty)
+                                                {
+                                                    <p>• @line</p>
+                                                }
+                                          
                                             }
                                         }
                                         else
@@ -101,7 +95,7 @@
                                     </div>
                                     <div class="px-6 pt-4 pb-4">
                                         <span class="inline-block bg-blue-100 text-blue-800 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2">
-                                            @experience.StartDate.ToString("MMM yyyy") – @(experience.EndDate.HasValue ? experience.EndDate.Value.ToString("MMM yyyy") : "Present")
+                                            @experience.DateRange
                                         </span>
                                         <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
                                             @experience.Location
@@ -127,18 +121,11 @@
                                         {
                                             <p class="text-gray-700 text-base">Come back later for more information.</p>
                                         }
-                                        else if (experience.Description.Split('*').Length > 1)
+                                        else if (experience.DescriptionLines.Any())
                                         {
-                                            @foreach (var bullet in experience.Description.Split('*').Skip(1))
+                                            foreach (var line in experience.DescriptionLines)
                                             {
-                                                <p class="text-gray-700 text-base">• @bullet.Trim()</p>
-                                            }
-                                        }
-                                        else if (experience.Description.Split('•').Length > 1)
-                                        {
-                                            @foreach (var bullet in experience.Description.Split('•').Skip(1))
-                                            {
-                                                <p class="text-gray-700 text-base">• @bullet.Trim()</p>
+                                                <p>• @line</p>
                                             }
                                         }
                                         else
@@ -148,7 +135,7 @@
                                     </div>
                                     <div class="px-6 pt-4 pb-4">
                                         <span class="inline-block bg-blue-100 text-blue-800 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2">
-                                            @experience.StartDate.ToString("MMM yyyy") – @(experience.EndDate.HasValue ? experience.EndDate.Value.ToString("MMM yyyy") : "Present")
+                                            @experience.DateRange
                                         </span>
                                         <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
                                             @experience.Location

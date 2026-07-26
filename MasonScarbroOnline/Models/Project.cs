@@ -1,4 +1,5 @@
-﻿namespace MasonScarbroOnline.Models
+﻿using MasonScarbroOnline.Helpers;
+namespace MasonScarbroOnline.Models
 {
     public class Project
     {
@@ -10,5 +11,7 @@
         public string? RepoUrl { get; set; }
         public string? DemoUrl { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        
     }
 }
