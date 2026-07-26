@@ -1,1 +1,20 @@
 ﻿@import "tailwindcss";
+@property --angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+
+@keyframes rotate-border {
+    to {
+        --angle: 360deg;
+    }
+}
+
+.gradient-border {
+    position: relative;
+    border-radius: 0.75rem;
+    padding: 2px;
+    background: conic-gradient(from var(--angle), #3b82f6, #a855f7, #ec4899, #3b82f6);
+    animation: rotate-border 4s linear infinite;
+}

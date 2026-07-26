@@ -3,8 +3,84 @@
 @{
     ViewData["Title"] = "Home page";
 }
-
+@using MasonScarbroOnline.Helpers
 <div class="text-center">
     <h1 class="text-4xl font-bold text-blue-600">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+<div class="mt-10">
+    <h2 class="text-2xl font-bold mb-4">Projects</h2>
+
+    @if (!Model.Projects.Any())
+    {
+        <p class="text-gray-500">No projects yet — add one to the database to see it here.</p>
+    }
+    else
+    {
+        <div class="grid gap-4">
+            @foreach (var project in Model.Projects)
+            {
+                <div class="gradient-border">
+                    <div class="bg-white rounded-[0.7rem] h-full overflow-hidden">
+                        <div class="px-6 py-4">
+                            <div class="font-bold text-xl mb-1">@project.Title</div>
+                            <p class="text-gray-700 text-base">@project.Description</p>
+                            <div class="flex flex-wrap items-center gap-3 mt-3">
+                                @foreach (var tech in IconHelper.Split(project.TechStack))
+                                {
+                                    var iconClass = IconHelper.GetIconClass(tech);
+                                    <div class="flex items-center gap-1.5 bg-gray-100 rounded-full px-3 py-1" title="@tech">
+                                        @if (iconClass != null)
+                                        {
+                                            <i class="@iconClass colored text-lg"></i>
+                                        }
+                                        <span class="text-sm text-gray-700">@tech</span>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="px-6 pt-4 pb-4">
+                            <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
+                                  href=@project.DemoUrl>
+                                    GoTo Project
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+<div class="mt-10">
+    <h2 class="text-2xl font-bold mb-4">Experience</h2>
+
+    @if (!Model.Experiences.Any())
+    {
+        <p class="text-gray-500">No experience listed yet.</p>
+    }
+    else
+    {
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @foreach (var experience in Model.Experiences)
+            {
+                <div class="gradient-border">
+                    <div class="bg-white rounded-[0.7rem] h-full overflow-hidden">
+                        <div class="px-6 py-4">
+                            <div class="font-bold text-xl mb-1">@experience.Title</div>
+                            <div class="text-gray-600 font-semibold mb-2">@experience.Company</div>
+                            <p class="text-gray-700 text-base">@experience.Description</p>
+                        </div>
+                        <div class="px-6 pt-4 pb-4">
+                            <span class="inline-block bg-blue-100 text-blue-800 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2">
+                                @experience.StartDate.ToString("MMM yyyy") – @(experience.EndDate.HasValue ? experience.EndDate.Value.ToString("MMM yyyy") : "Present")
+                            </span>
+                            <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                                @experience.Location
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
 </div>
