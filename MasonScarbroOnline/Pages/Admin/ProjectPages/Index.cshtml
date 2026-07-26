@@ -1,0 +1,72 @@
+@page
+@model MasonScarbroOnline.Pages.ProjectPages.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Project[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Project[0].Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Project[0].TechStack)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Project[0].ImageUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Project[0].RepoUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Project[0].DemoUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Project[0].CreatedAt)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Project) {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.TechStack)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ImageUrl)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.RepoUrl)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.DemoUrl)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.CreatedAt)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -9,12 +9,13 @@ services:
       - db
     environment:
       - ConnectionStrings__DefaultConnection=Server=db,1433;Database=PortfolioDb;User Id=sa;Password=${DB_PASSWORD};TrustServerCertificate=True;
-
+      - Admin__PasswordHash=${ADMIN_PASSWORD_HASH}
   db:
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
       - ACCEPT_EULA=Y
       - MSSQL_SA_PASSWORD=${DB_PASSWORD}
+
     ports:
       - "1433:1433"
     volumes:

@@ -21,7 +21,7 @@
             { "Git", "devicon-git-plain" },
             { "HTML", "devicon-html5-plain" },
             { "CSS", "devicon-css3-plain" },
-            { "cplusplus", "devicon-cplusplus-plain colored" },
+            { "C++", "devicon-cplusplus-plain colored" },
             { "Java", "devicon-java-plain colored" },
             { "Zig", "devicon-zig-plain colored" },
             { "PHP", "devicon-php-plain colored" },
@@ -36,7 +36,8 @@
             { "Dart", "devicon-dart-plain colored" },
             { "Elixir", "devicon-elixir-plain colored" },
             { "Clojure", "devicon-clojure-plain colored" },
-            { "Blazor", "devicon-blazor-plain colored" }
+            { "Blazor", "devicon-blazor-plain colored" },
+            { "OpenGl", "devicon-opengl-plain colored" }
         };
 
         public static string? GetIconClass(string techName) =>

@@ -1,0 +1,91 @@
+@page
+@model MasonScarbroOnline.Pages.ProjectPages.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="mx-auto max-w-2xl px-6 py-12">
+    <div class="mb-8">
+        <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">New Project</h1>
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Add a project to your portfolio.</p>
+    </div>
+
+    <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-white/5">
+        <form method="post" class="space-y-6">
+            <div asp-validation-summary="ModelOnly" class="text-sm text-red-600 dark:text-red-400"></div>
+
+            <div>
+                <label asp-for="Project.Title" class="block text-sm/6 font-medium text-gray-900 dark:text-gray-100"></label>
+                <div class="mt-2">
+                    <input asp-for="Project.Title" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-indigo-500" />
+                </div>
+                <span asp-validation-for="Project.Title" class="mt-1 block text-sm text-red-600 dark:text-red-400"></span>
+            </div>
+
+            <div>
+                <label asp-for="Project.Description" class="block text-sm/6 font-medium text-gray-900 dark:text-gray-100"></label>
+                <div class="mt-2">
+                    <textarea asp-for="Project.Description" rows="3" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-indigo-500"></textarea>
+                </div>
+                <span asp-validation-for="Project.Description" class="mt-1 block text-sm text-red-600 dark:text-red-400"></span>
+            </div>
+
+            <div>
+                <label asp-for="Project.TechStack" class="block text-sm/6 font-medium text-gray-900 dark:text-gray-100"></label>
+                <div class="mt-2">
+                    <input asp-for="Project.TechStack" placeholder="C#, ASP.NET Core, EF Core..." class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-indigo-500" />
+                </div>
+                <span asp-validation-for="Project.TechStack" class="mt-1 block text-sm text-red-600 dark:text-red-400"></span>
+            </div>
+
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                <div>
+                    <label asp-for="Project.ImageUrl" class="block text-sm/6 font-medium text-gray-900 dark:text-gray-100"></label>
+                    <div class="mt-2">
+                        <input asp-for="Project.ImageUrl" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-indigo-500" />
+                    </div>
+                    <span asp-validation-for="Project.ImageUrl" class="mt-1 block text-sm text-red-600 dark:text-red-400"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Project.RepoUrl" class="block text-sm/6 font-medium text-gray-900 dark:text-gray-100"></label>
+                    <div class="mt-2">
+                        <input asp-for="Project.RepoUrl" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-indigo-500" />
+                    </div>
+                    <span asp-validation-for="Project.RepoUrl" class="mt-1 block text-sm text-red-600 dark:text-red-400"></span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                <div>
+                    <label asp-for="Project.DemoUrl" class="block text-sm/6 font-medium text-gray-900 dark:text-gray-100"></label>
+                    <div class="mt-2">
+                        <input asp-for="Project.DemoUrl" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-indigo-500" />
+                    </div>
+                    <span asp-validation-for="Project.DemoUrl" class="mt-1 block text-sm text-red-600 dark:text-red-400"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Project.CreatedAt" class="block text-sm/6 font-medium text-gray-900 dark:text-gray-100"></label>
+                    <div class="mt-2">
+                        <input asp-for="Project.CreatedAt" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-indigo-500" />
+                    </div>
+                    <span asp-validation-for="Project.CreatedAt" class="mt-1 block text-sm text-red-600 dark:text-red-400"></span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 pt-2">
+                <button type="submit" class="rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500 dark:shadow-none dark:hover:bg-indigo-400 dark:focus-visible:outline-indigo-500">
+                    Create
+                </button>
+                <a asp-page="./Index" class="text-sm/6 font-semibold text-gray-900 hover:text-gray-700 dark:text-gray-100 dark:hover:text-gray-300">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

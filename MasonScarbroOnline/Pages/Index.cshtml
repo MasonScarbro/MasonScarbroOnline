@@ -60,27 +60,109 @@
     }
     else
     {
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            @foreach (var experience in Model.Experiences)
-            {
-                <div class="gradient-border">
-                    <div class="bg-white rounded-[0.7rem] h-full overflow-hidden">
-                        <div class="px-6 py-4">
-                            <div class="font-bold text-xl mb-1">@experience.Title</div>
-                            <div class="text-gray-600 font-semibold mb-2">@experience.Company</div>
-                            <p class="text-gray-700 text-base">@experience.Description</p>
+        <div class="relative mx-auto p-2">
+            <!-- Single continuous timeline line — one element, never broken per row -->
+            <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 -translate-x-1/2 bg-blue-800 pointer-events-none"></div>
+
+            <div class="flex flex-col md:grid md:grid-cols-9 gap-y-8">
+                @foreach (var experience in Model.Experiences)
+                {
+                    @if (true)
+                    {
+                        <!-- left -->
+                        <div class="flex md:grid md:grid-cols-9 md:col-span-9">
+                            <div class="w-full md:col-start-1 md:col-end-5 md:mr-6 gradient-border">
+                                <div class="bg-white rounded-[0.7rem] h-full overflow-hidden">
+                                    <div class="px-6 py-4">
+                                        <div class="font-bold text-xl mb-1">@experience.Title</div>
+                                        <div class="text-gray-600 font-semibold mb-2">@experience.Company</div>
+                                        @if (string.IsNullOrEmpty(experience.Description))
+                                        {
+                                            <p class="text-gray-700 text-base">Come back later for more information.</p>
+                                        }
+                                        else if (experience.Description.Split('*').Length > 1)
+                                        {
+                                            @foreach (var bullet in experience.Description.Split('*').Skip(1))
+                                            {
+                                                <p class="text-gray-700 text-base">• @bullet.Trim()</p>
+                                            }
+                                        }
+                                        else if (experience.Description.Split('•').Length > 1)
+                                        {
+                                            @foreach (var bullet in experience.Description.Split('•').Skip(1))
+                                            {
+                                                <p class="text-gray-700 text-base">• @bullet.Trim()</p>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <p class="text-gray-700 text-base">@experience.Description</p>
+                                        }
+                                    </div>
+                                    <div class="px-6 pt-4 pb-4">
+                                        <span class="inline-block bg-blue-100 text-blue-800 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2">
+                                            @experience.StartDate.ToString("MMM yyyy") – @(experience.EndDate.HasValue ? experience.EndDate.Value.ToString("MMM yyyy") : "Present")
+                                        </span>
+                                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                                            @experience.Location
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hidden md:flex md:col-start-5 md:col-end-6 md:self-center items-center justify-center relative z-10">
+                                <div class="w-6 h-6 rounded-full bg-blue-500 shadow"></div>
+                            </div>
                         </div>
-                        <div class="px-6 pt-4 pb-4">
-                            <span class="inline-block bg-blue-100 text-blue-800 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2">
-                                @experience.StartDate.ToString("MMM yyyy") – @(experience.EndDate.HasValue ? experience.EndDate.Value.ToString("MMM yyyy") : "Present")
-                            </span>
-                            <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                                @experience.Location
-                            </span>
+                    }
+                    else
+                    {
+                        <!-- right -->
+                        <div class="flex flex-row-reverse md:grid md:grid-cols-9 md:col-span-9">
+                            <div class="w-full md:col-start-6 md:col-end-10 md:ml-6 gradient-border">
+                                <div class="bg-white rounded-[0.7rem] h-full overflow-hidden">
+                                    <div class="px-6 py-4">
+                                        <div class="font-bold text-xl mb-1">@experience.Title</div>
+                                        <div class="text-gray-600 font-semibold mb-2">@experience.Company</div>
+                                        @if (string.IsNullOrEmpty(experience.Description))
+                                        {
+                                            <p class="text-gray-700 text-base">Come back later for more information.</p>
+                                        }
+                                        else if (experience.Description.Split('*').Length > 1)
+                                        {
+                                            @foreach (var bullet in experience.Description.Split('*').Skip(1))
+                                            {
+                                                <p class="text-gray-700 text-base">• @bullet.Trim()</p>
+                                            }
+                                        }
+                                        else if (experience.Description.Split('•').Length > 1)
+                                        {
+                                            @foreach (var bullet in experience.Description.Split('•').Skip(1))
+                                            {
+                                                <p class="text-gray-700 text-base">• @bullet.Trim()</p>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <p class="text-gray-700 text-base">@experience.Description</p>
+                                        }
+                                    </div>
+                                    <div class="px-6 pt-4 pb-4">
+                                        <span class="inline-block bg-blue-100 text-blue-800 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2">
+                                            @experience.StartDate.ToString("MMM yyyy") – @(experience.EndDate.HasValue ? experience.EndDate.Value.ToString("MMM yyyy") : "Present")
+                                        </span>
+                                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                                            @experience.Location
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hidden md:flex md:col-start-5 md:col-end-6 md:self-center items-center justify-center relative z-10">
+                                <div class="w-6 h-6 rounded-full bg-blue-500 shadow"></div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            }
+                    }
+                }
+            </div>
         </div>
     }
 </div>

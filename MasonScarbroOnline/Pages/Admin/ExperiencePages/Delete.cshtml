@@ -1,0 +1,42 @@
+﻿@page "{id:int}"
+@model MasonScarbroOnline.Pages.Admin.ExperiencePages.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete Experience";
+}
+
+<div class="mx-auto max-w-2xl px-6 py-12">
+    <div class="mb-8">
+        <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Delete Experience</h1>
+        <p class="mt-1 text-sm text-red-600 dark:text-red-400">This can't be undone. Are you sure you want to delete this entry?</p>
+    </div>
+
+    <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-white/5">
+        <dl class="divide-y divide-gray-200 dark:divide-white/10">
+            <div class="grid grid-cols-3 gap-4 py-3">
+                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Title</dt>
+                <dd class="col-span-2 text-sm text-gray-900 dark:text-gray-100">@Model.Experience.Title</dd>
+            </div>
+            <div class="grid grid-cols-3 gap-4 py-3">
+                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Company</dt>
+                <dd class="col-span-2 text-sm text-gray-900 dark:text-gray-100">@Model.Experience.Company</dd>
+            </div>
+            <div class="grid grid-cols-3 gap-4 py-3">
+                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Dates</dt>
+                <dd class="col-span-2 text-sm text-gray-900 dark:text-gray-100">
+                    @Model.Experience.StartDate.ToString("MMM yyyy") &ndash; @(Model.Experience.EndDate.HasValue ? Model.Experience.EndDate.Value.ToString("MMM yyyy") : "Present")
+                </dd>
+            </div>
+        </dl>
+
+        <form method="post" class="mt-6 flex items-center gap-4">
+            <input type="hidden" asp-for="Experience.Id" />
+            <button type="submit" class="rounded-md bg-red-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-red-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 dark:bg-red-500 dark:hover:bg-red-400">
+                Delete
+            </button>
+            <a asp-page="./Index" class="text-sm/6 font-semibold text-gray-900 hover:text-gray-700 dark:text-gray-100 dark:hover:text-gray-300">
+                Cancel
+            </a>
+        </form>
+    </div>
+</div>

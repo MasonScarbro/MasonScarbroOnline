@@ -1,0 +1,41 @@
+﻿@page "{id:int}"
+@model MasonScarbroOnline.Pages.Admin.ExperiencePages.DetailsModel
+
+@{
+    ViewData["Title"] = "Experience Details";
+}
+
+<div class="mx-auto max-w-2xl px-6 py-12">
+    <div class="mb-8">
+        <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">@Model.Experience.Title</h1>
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">@Model.Experience.Company</p>
+    </div>
+
+    <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-white/5">
+        <dl class="divide-y divide-gray-200 dark:divide-white/10">
+            <div class="grid grid-cols-3 gap-4 py-3">
+                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Location</dt>
+                <dd class="col-span-2 text-sm text-gray-900 dark:text-gray-100">@Model.Experience.Location</dd>
+            </div>
+            <div class="grid grid-cols-3 gap-4 py-3">
+                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Dates</dt>
+                <dd class="col-span-2 text-sm text-gray-900 dark:text-gray-100">
+                    @Model.Experience.StartDate.ToString("MMM yyyy") &ndash; @(Model.Experience.EndDate.HasValue ? Model.Experience.EndDate.Value.ToString("MMM yyyy") : "Present")
+                </dd>
+            </div>
+            <div class="grid grid-cols-3 gap-4 py-3">
+                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Description</dt>
+                <dd class="col-span-2 text-sm text-gray-900 dark:text-gray-100">@Model.Experience.Description</dd>
+            </div>
+        </dl>
+    </div>
+
+    <div class="mt-6 flex items-center gap-4">
+        <a asp-page="Edit" asp-route-id="@Model.Experience.Id" class="rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500 dark:shadow-none dark:hover:bg-indigo-400 dark:focus-visible:outline-indigo-500">
+            Edit
+        </a>
+        <a asp-page="./Index" class="text-sm/6 font-semibold text-gray-900 hover:text-gray-700 dark:text-gray-100 dark:hover:text-gray-300">
+            Back to List
+        </a>
+    </div>
+</div>

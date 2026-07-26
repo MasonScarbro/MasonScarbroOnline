@@ -1,0 +1,60 @@
+﻿@page
+@model MasonScarbroOnline.Pages.Admin.ExperiencePages.IndexModel
+
+@{
+    ViewData["Title"] = "Experience";
+}
+
+<div class="mx-auto max-w-5xl px-6 py-12">
+    <div class="mb-8 flex items-center justify-between">
+        <div>
+            <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Experience</h1>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Manage your work history entries.</p>
+        </div>
+        <a asp-page="Create" class="rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500 dark:shadow-none dark:hover:bg-indigo-400 dark:focus-visible:outline-indigo-500">
+            + Add Experience
+        </a>
+    </div>
+
+    <div class="overflow-hidden rounded-lg border border-gray-200 shadow-sm dark:border-white/10">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-white/10">
+            <thead class="bg-gray-50 dark:bg-white/5">
+                <tr>
+                    <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Title</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Company</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Location</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Dates</th>
+                    <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-white dark:divide-white/10 dark:bg-transparent">
+                @foreach (var item in Model.Experience)
+                {
+                    <tr class="hover:bg-gray-50 dark:hover:bg-white/5">
+                        <td class="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">@item.Title</td>
+                        <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">@item.Company</td>
+                        <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">@item.Location</td>
+                        <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
+                            @item.StartDate.ToString("MMM yyyy") &ndash; @(item.EndDate.HasValue ? item.EndDate.Value.ToString("MMM yyyy") : "Present")
+                        </td>
+                        <td class="px-4 py-3 text-right text-sm">
+                            <a asp-page="Edit" asp-route-id="@item.Id" class="font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300">Edit</a>
+                            <span class="mx-2 text-gray-300 dark:text-gray-600">|</span>
+                            <a asp-page="Details" asp-route-id="@item.Id" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200">Details</a>
+                            <span class="mx-2 text-gray-300 dark:text-gray-600">|</span>
+                            <a asp-page="Delete" asp-route-id="@item.Id" class="font-semibold text-red-600 hover:text-red-500 dark:text-red-400 dark:hover:text-red-300">Delete</a>
+                        </td>
+                    </tr>
+                }
+                @if (!Model.Experience.Any())
+                {
+                    <tr>
+                        <td colspan="5" class="px-4 py-8 text-center text-sm text-gray-500 dark:text-gray-400">
+                            No experience entries yet.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

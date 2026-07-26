@@ -9,5 +9,6 @@ namespace MasonScarbroOnline.Data
         }
         public DbSet<MasonScarbroOnline.Models.Project> Projects { get; set; }
         public DbSet<MasonScarbroOnline.Models.Experience> Experiences { get; set; }
+        public DbSet<MasonScarbroOnline.Models.Thought> Thoughts { get; set; }
     }
 }

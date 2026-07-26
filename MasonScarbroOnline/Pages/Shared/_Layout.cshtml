@@ -1,16 +1,16 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - MasonScarbroOnline</title>
     <script type="importmap"></script>
-    
+
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MasonScarbroOnline.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
 </head>
-<body>
+<body class="flex min-h-full flex-col">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
@@ -32,14 +32,15 @@
             </div>
         </nav>
     </header>
-    <div class="container mx-auto">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container mx-auto">
+    <main role="main" class="flex-1">
+        <div class="container mx-auto pb-3">
+            @RenderBody()
+        </div>
+    </main>
+
+    <footer class="border-top text-muted mt-10">
+        <div class="container mx-auto py-3">
             &copy; 2026 - MasonScarbroOnline - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
     </footer>
