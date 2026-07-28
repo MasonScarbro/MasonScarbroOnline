@@ -1,5 +1,6 @@
 using MasonScarbroOnline.Data;
 using MasonScarbroOnline.Models;
+using MasonScarbroOnline.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +15,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
             maxRetryCount: 5,
             maxRetryDelay: TimeSpan.FromSeconds(10),
             errorNumbersToAdd: null)));
+builder.Services.AddHttpClient<IExperienceQAService, ExperienceQAService>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
