@@ -3,151 +3,52 @@
 @{
     ViewData["Title"] = "Home page";
 }
-@using MasonScarbroOnline.Helpers
-<div class="text-center">
-    <h1 class="text-4xl font-bold text-blue-600">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+<div class="text-center reveal is-visible">
+    <h1 class="font-display text-4xl font-bold text-gray-900 dark:text-white">Welcome</h1>
+    <p class="text-gray-600 dark:text-gray-400 mt-2">
+        Learn about <a href="https://learn.microsoft.com/aspnet/core" class="text-accent hover:underline">building Web apps with ASP.NET Core</a>.
+    </p>
 </div>
-<div class="mt-10">
-    <h2 class="text-2xl font-bold mb-4">Projects</h2>
+
+<div class="mt-16" id="projects">
+    <p class="font-mono text-sm text-accent mb-1 text-center">// portfolio</p>
+    <h2 class="font-display text-2xl font-bold mb-6 text-center text-gray-900 dark:text-white">Projects</h2>
 
     @if (!Model.Projects.Any())
     {
-        <p class="text-gray-500">No projects yet — add one to the database to see it here.</p>
+        <p class="text-gray-500 dark:text-gray-400 text-center">No projects yet — add one to the database to see it here.</p>
     }
     else
     {
         <div class="grid gap-4">
-            @foreach (var project in Model.Projects)
+            @for (int i = 0; i < Model.Projects.Count; i++)
             {
-                <div class="gradient-border">
-                    <div class="bg-white rounded-[0.7rem] h-full overflow-hidden">
-                        <div class="px-6 py-4">
-                            <div class="font-bold text-xl mb-1">@project.Title</div>
-                            <p class="text-gray-700 text-base">@project.Description</p>
-                            <div class="flex flex-wrap items-center gap-3 mt-3">
-                                @foreach (var tech in IconHelper.Split(project.TechStack))
-                                {
-                                    var iconClass = IconHelper.GetIconClass(tech);
-                                    <div class="flex items-center gap-1.5 bg-gray-100 rounded-full px-3 py-1" title="@tech"> @if (iconClass != null) {
-                                        <i class="@iconClass colored text-lg"></i>
-                                    }
-                                    <span class="text-sm text-gray-700">@tech</span> </div>
-                                }
-                            </div>
-                        </div>
-                        <div class="px-6 pt-4 pb-4">
-                            <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-                                  href=@project.DemoUrl>
-                                    GoTo Project
-                            </span>
-                        </div>
-                    </div>
-                </div>
+                var nodeId = $"project-{i}";
+                <partial name="_ProjectCard" model="(Model.Projects[i], nodeId)" />
             }
         </div>
     }
 </div>
-<div class="mt-10">
-    <h2 class="text-2xl font-bold mb-4">Experience</h2>
+
+<div class="mt-20">
+    <p class="font-mono text-sm text-accent mb-1 text-center">// timeline</p>
+    <h2 class="font-display text-2xl font-bold mb-6 text-center text-gray-900 dark:text-white">Experience</h2>
 
     @if (!Model.Experiences.Any())
     {
-        <p class="text-gray-500">No experience listed yet.</p>
+        <p class="text-gray-500 dark:text-gray-400 text-center">No experience listed yet.</p>
     }
     else
     {
         <div class="relative mx-auto p-2">
-            <!-- Single continuous timeline line — one element, never broken per row -->
-            <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 -translate-x-1/2 bg-blue-800 pointer-events-none"></div>
+            <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 -translate-x-1/2 bg-gray-200 dark:bg-white/10 pointer-events-none"></div>
 
             <div class="flex flex-col md:grid md:grid-cols-9 gap-y-8">
-                @foreach (var experience in Model.Experiences)
+                @for (int i = 0; i < Model.Experiences.Count; i++)
                 {
-                    @if (true)
-                    {
-                        <!-- left -->
-                        <div class="flex md:grid md:grid-cols-9 md:col-span-9">
-                            <div class="w-full md:col-start-1 md:col-end-5 md:mr-6 gradient-border">
-                                <div class="bg-white rounded-[0.7rem] h-full overflow-hidden">
-                                    <div class="px-6 py-4">
-                                        <div class="font-bold text-xl mb-1">@experience.Title</div>
-                                        <div class="text-gray-600 font-semibold mb-2">@experience.Company</div>
-                                        @if (string.IsNullOrEmpty(experience.Description))
-                                        {
-                                            <p class="text-gray-700 text-base">Come back later for more information.</p>
-                                        }
-                                        else if (experience.DescriptionLines.Any())
-                                        {
-                                            foreach (var line in experience.DescriptionLines)
-                                            {
-                                                if (line != string.Empty)
-                                                {
-                                                    <p>• @line</p>
-                                                }
-                                          
-                                            }
-                                        }
-                                        else
-                                        {
-                                            <p class="text-gray-700 text-base">@experience.Description</p>
-                                        }
-                                    </div>
-                                    <div class="px-6 pt-4 pb-4">
-                                        <span class="inline-block bg-blue-100 text-blue-800 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2">
-                                            @experience.DateRange
-                                        </span>
-                                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                                            @experience.Location
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="hidden md:flex md:col-start-5 md:col-end-6 md:self-center items-center justify-center relative z-10">
-                                <div class="w-6 h-6 rounded-full bg-blue-500 shadow"></div>
-                            </div>
-                        </div>
-                    }
-                    else
-                    {
-                        <!-- right -->
-                        <div class="flex flex-row-reverse md:grid md:grid-cols-9 md:col-span-9">
-                            <div class="w-full md:col-start-6 md:col-end-10 md:ml-6 gradient-border">
-                                <div class="bg-white rounded-[0.7rem] h-full overflow-hidden">
-                                    <div class="px-6 py-4">
-                                        <div class="font-bold text-xl mb-1">@experience.Title</div>
-                                        <div class="text-gray-600 font-semibold mb-2">@experience.Company</div>
-                                        @if (string.IsNullOrEmpty(experience.Description))
-                                        {
-                                            <p class="text-gray-700 text-base">Come back later for more information.</p>
-                                        }
-                                        else if (experience.DescriptionLines.Any())
-                                        {
-                                            foreach (var line in experience.DescriptionLines)
-                                            {
-                                                <p>• @line</p>
-                                            }
-                                        }
-                                        else
-                                        {
-                                            <p class="text-gray-700 text-base">@experience.Description</p>
-                                        }
-                                    </div>
-                                    <div class="px-6 pt-4 pb-4">
-                                        <span class="inline-block bg-blue-100 text-blue-800 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2">
-                                            @experience.DateRange
-                                        </span>
-                                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                                            @experience.Location
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="hidden md:flex md:col-start-5 md:col-end-6 md:self-center items-center justify-center relative z-10">
-                                <div class="w-6 h-6 rounded-full bg-blue-500 shadow"></div>
-                            </div>
-                        </div>
-                    }
+                    var nodeId = $"exp-{i}";
+                    <partial name="_TimelineEntry" model="(Model.Experiences[i], i % 2 == 1, nodeId)" />
                 }
             </div>
         </div>

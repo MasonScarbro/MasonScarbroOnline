@@ -1,0 +1,48 @@
+﻿/* Scroll progress bar under the header — fills as you scroll the page */
+#scroll-progress {
+    height: 2px;
+    background: linear-gradient(90deg, #6366F1, #F5B94A);
+    width: 0%;
+    transition: width 0.1s linear;
+}
+
+/* Timeline node states — dim until its section is in view, then glow amber */
+.timeline-node {
+    transition: background-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
+}
+
+    .timeline-node.is-active {
+        background-color: #F5B94A;
+        box-shadow: 0 0 0 6px rgba(245, 185, 74, 0.2), 0 0 20px rgba(245, 185, 74, 0.5);
+        transform: scale(1.15);
+    }
+
+/* Line segment that "fills in" behind you as you scroll past each node */
+.timeline-fill {
+    transition: height 0.5s ease;
+}
+
+/* Scroll-reveal for content blocks */
+.reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+    .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+@media (prefers-reduced-motion: reduce) {
+    .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .timeline-node, .timeline-fill {
+        transition: none;
+    }
+}
+

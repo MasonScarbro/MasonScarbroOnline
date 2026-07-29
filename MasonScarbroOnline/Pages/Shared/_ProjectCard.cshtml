@@ -1,0 +1,39 @@
+﻿@using MasonScarbroOnline.Helpers
+@using MasonScarbroOnline.Models
+@model (Project Project, string NodeId)
+@{
+    var project = Model.Project;
+}
+
+<div class="reveal" data-node="@Model.NodeId">
+    <div class="gradient-border">
+        <div class="bg-surface-light dark:bg-surface-dark rounded-[0.7rem] h-full overflow-hidden transition-colors duration-300">
+            <div class="px-6 py-4">
+                <div class="font-display font-bold text-xl mb-1 text-gray-900 dark:text-white">@project.Title</div>
+                <p class="text-gray-700 dark:text-gray-300 text-base">@project.Description</p>
+                <div class="flex flex-wrap items-center gap-3 mt-3">
+                    @foreach (var tech in IconHelper.Split(project.TechStack))
+                    {
+                        var iconClass = IconHelper.GetIconClass(tech);
+                        <div class="flex items-center gap-1.5 bg-gray-100 dark:bg-white/10 rounded-full px-3 py-1" title="@tech">
+                            @if (iconClass != null)
+                            {
+                                <i class="@iconClass colored text-lg"></i>
+                            }
+                            <span class="text-sm font-mono text-gray-700 dark:text-gray-300">@tech</span>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="px-6 pt-4 pb-4">
+                @if (!string.IsNullOrEmpty(project.DemoUrl))
+                {
+                    <a href="@project.DemoUrl" target="_blank" rel="noopener"
+                       class="inline-block bg-gray-200 dark:bg-white/10 hover:bg-accent hover:text-white rounded-full px-3 py-1 text-sm font-semibold text-gray-700 dark:text-gray-200 mr-2 mb-2 transition">
+                        GoTo Project
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

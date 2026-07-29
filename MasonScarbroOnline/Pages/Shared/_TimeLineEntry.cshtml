@@ -1,0 +1,48 @@
+﻿@using MasonScarbroOnline.Models
+@model (Experience Experience, bool IsRight, string NodeId)
+@{
+    var e = Model.Experience;
+    var side = Model.IsRight ? "flex-row-reverse" : "flex";
+    var cardCol = Model.IsRight ? "md:col-start-6 md:col-end-10 md:ml-6" : "md:col-start-1 md:col-end-5 md:mr-6";
+}
+
+<div class="@side md:grid md:grid-cols-9 md:col-span-9">
+    <div class="w-full @cardCol reveal" data-node="@Model.NodeId">
+        <div class="gradient-border">
+            <div class="bg-surface-light dark:bg-surface-dark rounded-[0.7rem] h-full overflow-hidden transition-colors duration-300">
+                <div class="px-6 py-4">
+                    <div class="font-display font-bold text-xl mb-1 text-gray-900 dark:text-white">@e.Title</div>
+                    <div class="text-gray-600 dark:text-gray-400 font-semibold mb-2">@e.Company</div>
+                    @if (string.IsNullOrEmpty(e.Description))
+                    {
+                        <p class="text-gray-700 dark:text-gray-300 text-base">Come back later for more information.</p>
+                    }
+                    else if (e.DescriptionLines.Any())
+                    {
+                        <ul class="text-gray-700 dark:text-gray-300 space-y-1">
+                            @foreach (var line in e.DescriptionLines.Where(l => l != string.Empty))
+                            {
+                                <li>• @line</li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="text-gray-700 dark:text-gray-300 text-base">@e.Description</p>
+                    }
+                </div>
+                <div class="px-6 pt-4 pb-4">
+                    <span class="inline-block bg-accent/10 text-accent dark:bg-accent/20 rounded-full px-3 py-1 text-sm font-mono font-semibold mr-2 mb-2">
+                        @e.DateRange
+                    </span>
+                    <span class="inline-block bg-gray-200 dark:bg-white/10 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 dark:text-gray-300 mr-2 mb-2">
+                        @e.Location
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hidden md:flex md:col-start-5 md:col-end-6 md:self-center items-center justify-center relative z-10">
+        <div data-node-target="@Model.NodeId" class="timeline-node w-6 h-6 rounded-full bg-gray-300 dark:bg-gray-600 shadow"></div>
+    </div>
+</div>
