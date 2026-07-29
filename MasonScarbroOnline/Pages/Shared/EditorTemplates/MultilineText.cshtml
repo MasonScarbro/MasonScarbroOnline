@@ -1,0 +1,13 @@
+﻿@model string
+@using MasonScarbroOnline.Helpers
+@{
+    var meta = ViewData.ModelMetadata;
+    var rows = ViewData["rows"] ?? 3;
+}
+<div>
+    <label class="@UiClasses.Label">@meta.GetDisplayName()</label>
+    <div class="mt-2">
+        @Html.TextAreaFor(m => m, new { @class = UiClasses.FormInput, rows })
+    </div>
+    <span class="@UiClasses.ValidationMsg" data-valmsg-for="@ViewData.TemplateInfo.HtmlFieldPrefix"></span>
+</div>

@@ -1,0 +1,17 @@
+﻿@model string
+@using MasonScarbroOnline.Helpers
+@{
+    var meta = ViewData.ModelMetadata;
+}
+<div>
+    <label class="@UiClasses.Label">@meta.GetDisplayName()</label>
+    <div class="mt-2">
+        @Html.TextBoxFor(m => m, new
+        {
+            @class = UiClasses.FormInput,
+            placeholder = meta.Placeholder,
+            type = meta.DataTypeName == "Url" ? "url" : "text"
+        })
+    </div>
+    <span class="@UiClasses.ValidationMsg" data-valmsg-for="@ViewData.TemplateInfo.HtmlFieldPrefix"></span>
+</div>

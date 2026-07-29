@@ -1,0 +1,17 @@
+﻿@model DateTime?
+@using MasonScarbroOnline.Helpers
+@{
+    var meta = ViewData.ModelMetadata;
+    var value = Model?.ToString("yyyy-MM-dd");
+}
+<div>
+    <label class="@UiClasses.Label">@meta.GetDisplayName()</label>
+    <div class="mt-2">
+        <input type="date" name="@ViewData.TemplateInfo.HtmlFieldPrefix" value="@value" class="@UiClasses.FormInput" />
+    </div>
+    @if (!string.IsNullOrEmpty(meta.Description))
+    {
+        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">@meta.Description</p>
+    }
+    <span class="@UiClasses.ValidationMsg" data-valmsg-for="@ViewData.TemplateInfo.HtmlFieldPrefix"></span>
+</div>
