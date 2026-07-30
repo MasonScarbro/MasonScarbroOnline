@@ -1,6 +1,8 @@
 using MasonScarbroOnline.Data;
+using MasonScarbroOnline.Middleware;
 using MasonScarbroOnline.Models;
 using MasonScarbroOnline.Services;
+using MasonScarbroOnline.Services.Github;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +18,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
             maxRetryDelay: TimeSpan.FromSeconds(10),
             errorNumbersToAdd: null)));
 builder.Services.AddHttpClient<IExperienceQAService, ExperienceQAService>();
+builder.Services.AddHttpClient<GitHubStatsService>(); 
+builder.Services.AddMemoryCache();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
@@ -49,6 +53,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapStaticAssets();
+app.UseMiddleware<PageViewTrackingMiddleware>();
 app.MapRazorPages()
    .WithStaticAssets();
 

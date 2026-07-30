@@ -11,6 +11,7 @@ services:
       - ConnectionStrings__DefaultConnection=Server=db,1433;Database=PortfolioDb;User Id=sa;Password=${DB_PASSWORD};TrustServerCertificate=True;
       - Admin__PasswordHash=${ADMIN_PASSWORD_HASH}
       - Groq__Key=${GROQKEY} 
+      - Github__Token=${GHTOKEN}
   db:
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:

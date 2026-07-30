@@ -1,0 +1,43 @@
+﻿@model MasonScarbroOnline.Services.Github.GitHubStatsSnapshot
+
+<div class="reveal is-visible">
+    <div class="rounded-lg border border-gray-200 dark:border-white/10 bg-surface-light dark:bg-surface-dark p-6">
+        <p class="font-mono text-xs text-accent mb-4">// github, live</p>
+
+        @if (Model.TotalRepos == 0)
+        {
+            <p class="text-sm text-gray-500 dark:text-gray-400">GitHub stats unavailable right now.</p>
+        }
+        else
+        {
+            <div class="grid grid-cols-3 gap-4 text-center mb-6">
+                <div>
+                    <p class="font-display text-2xl font-bold text-gray-900 dark:text-white">@Model.TotalRepos</p>
+                    <p class="text-xs text-gray-500">repos</p>
+                </div>
+                <div>
+                    <p class="font-display text-2xl font-bold text-gray-900 dark:text-white">@Model.TotalCommits</p>
+                    <p class="text-xs text-gray-500">commits</p>
+                </div>
+                <div>
+                    <p class="font-display text-2xl font-bold text-gray-900 dark:text-white">@Model.LinesContributed.ToString("N0")</p>
+                    <p class="text-xs text-gray-500">lines contributed (All History)</p>
+                </div>
+            </div>
+
+            <div class="space-y-2">
+                @foreach (var (lang, pct) in Model.TopLanguages)
+                {
+                    <div>
+                        <div class="flex justify-between text-xs font-mono text-gray-600 dark:text-gray-400 mb-1">
+                            <span>@lang</span><span>@pct%</span>
+                        </div>
+                        <div class="h-1.5 rounded-full bg-gray-100 dark:bg-white/10">
+                            <div class="h-1.5 rounded-full bg-accent" style="width: @(pct)%"></div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>

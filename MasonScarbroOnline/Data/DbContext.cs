@@ -11,5 +11,6 @@ namespace MasonScarbroOnline.Data
         public DbSet<MasonScarbroOnline.Models.Experience> Experiences { get; set; }
         public DbSet<MasonScarbroOnline.Models.Thought> Thoughts { get; set; }
         public DbSet<MasonScarbroOnline.Models.TidBit> TidBits { get; set; }
+        public DbSet<MasonScarbroOnline.Models.PageView> PageViews { get; set; }
     }
 }

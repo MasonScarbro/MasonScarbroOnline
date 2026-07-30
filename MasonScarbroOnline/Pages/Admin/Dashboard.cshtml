@@ -1,0 +1,71 @@
+﻿@page
+@model MasonScarbroOnline.Pages.Admin.DashboardModel
+@{ ViewData["Title"] = "Dashboard"; }
+
+<div class="mx-auto max-w-5xl px-6 py-12">
+    <h1 class="font-display text-2xl font-bold mb-8 text-gray-900 dark:text-white">Dashboard</h1>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
+        <div class="rounded-lg border border-gray-200 dark:border-white/10 bg-surface-light dark:bg-surface-dark p-5">
+            <p class="font-mono text-xs text-accent">total views</p>
+            <p class="font-display text-3xl font-bold text-gray-900 dark:text-white">@Model.TotalViews</p>
+        </div>
+        <div class="rounded-lg border border-gray-200 dark:border-white/10 bg-surface-light dark:bg-surface-dark p-5">
+            <p class="font-mono text-xs text-accent">top page</p>
+            <p class="font-display text-xl font-bold text-gray-900 dark:text-white">@(Model.TopPaths.FirstOrDefault()?.Path ?? "—")</p>
+        </div>
+        <div class="rounded-lg border border-gray-200 dark:border-white/10 bg-surface-light dark:bg-surface-dark p-5">
+            <p class="font-mono text-xs text-accent">top referrer</p>
+            <p class="font-display text-xl font-bold text-gray-900 dark:text-white">@(Model.TopReferrers.FirstOrDefault()?.Referrer ?? "direct")</p>
+        </div>
+    </div>
+
+    <div class="rounded-lg border border-gray-200 dark:border-white/10 bg-surface-light dark:bg-surface-dark p-6 mb-10">
+        <canvas id="viewsChart" height="80"></canvas>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+        <div>
+            <h2 class="font-mono text-sm text-accent mb-3">// top pages</h2>
+            @foreach (var p in Model.TopPaths)
+            {
+                <div class="flex justify-between text-sm py-1.5 border-b border-gray-100 dark:border-white/5">
+                    <span class="text-gray-700 dark:text-gray-300">@p.Path</span>
+                    <span class="font-mono text-gray-500">@p.Count</span>
+                </div>
+            }
+        </div>
+        <div>
+            <h2 class="font-mono text-sm text-accent mb-3">// top referrers</h2>
+            @foreach (var r in Model.TopReferrers)
+            {
+                <div class="flex justify-between text-sm py-1.5 border-b border-gray-100 dark:border-white/5">
+                    <span class="text-gray-700 dark:text-gray-300 truncate max-w-[70%]">@r.Referrer</span>
+                    <span class="font-mono text-gray-500">@r.Count</span>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const labels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ViewsLast30Days.Select(d => d.Date.ToString("MMM d"))));
+    const data = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ViewsLast30Days.Select(d => d.Count)));
+
+    new Chart(document.getElementById('viewsChart'), {
+        type: 'line',
+        data: {
+            labels,
+            datasets: [{
+                label: 'Views',
+                data,
+                borderColor: '#6366F1',
+                backgroundColor: 'rgba(99,102,241,0.1)',
+                tension: 0.3,
+                fill: true
+            }]
+        },
+        options: { plugins: { legend: { display: false } } }
+    });
+</script>
