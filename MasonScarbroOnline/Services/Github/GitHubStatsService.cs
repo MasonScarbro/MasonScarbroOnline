@@ -30,23 +30,26 @@ namespace MasonScarbroOnline.Services.Github
                 entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(6);
 
                 var repos = await _http.GetFromJsonAsync<List<GhRepo>>($"users/{_username}/repos?per_page=100") ?? new();
+                var nonForkRepos = repos.Where(r => !r.Fork).ToList();
+
+                using var throttle = new SemaphoreSlim(5);
+                var perRepoResults = await Task.WhenAll(nonForkRepos.Select(async repo =>
+                {
+                    await throttle.WaitAsync();
+                    try { return await GetRepoStatsAsync(repo.Name); }
+                    finally { throttle.Release(); }
+                }));
+
                 var langTotals = new Dictionary<string, long>();
                 int totalCommits = 0;
                 int linesContributed = 0;
 
-                foreach (var repo in repos.Where(r => !r.Fork))
+                foreach (var result in perRepoResults)
                 {
-                    var langs = await _http.GetFromJsonAsync<Dictionary<string, long>>($"repos/{_username}/{repo.Name}/languages") ?? new();
-                    foreach (var (lang, bytes) in langs)
+                    foreach (var (lang, bytes) in result.Languages)
                         langTotals[lang] = langTotals.GetValueOrDefault(lang) + bytes;
-
-                    var contributors = await GetContributorStatsSafeAsync(repo.Name);
-                    var mine = contributors?.FirstOrDefault(c => c.Author?.Login == _username);
-                    if (mine != null)
-                    {
-                        totalCommits += mine.Total;
-                        linesContributed += mine.Weeks.Sum(w => w.Additions);
-                    }
+                    totalCommits += result.Commits;
+                    linesContributed += result.Lines;
                 }
 
                 var totalBytes = langTotals.Values.Sum();
@@ -67,6 +70,26 @@ namespace MasonScarbroOnline.Services.Github
 
             }) ?? new GitHubStatsSnapshot();
         }
+
+        private record RepoStatsResult(Dictionary<string, long> Languages, int Commits, int Lines);
+
+        private async Task<RepoStatsResult> GetRepoStatsAsync(string repoName)
+        {
+            var langsTask = _http.GetFromJsonAsync<Dictionary<string, long>>($"repos/{_username}/{repoName}/languages");
+            var contributorsTask = GetContributorStatsSafeAsync(repoName);
+            await Task.WhenAll(langsTask, contributorsTask);
+
+            var langs = langsTask.Result ?? new();
+            var mine = contributorsTask.Result?.FirstOrDefault(c =>
+                string.Equals(c.Author?.Login, _username, StringComparison.OrdinalIgnoreCase));
+
+            return new RepoStatsResult(
+                langs,
+                mine?.Total ?? 0,
+                mine?.Weeks.Sum(w => w.Additions) ?? 0
+            );
+        }
+
         private async Task<List<GhContributorStats>?> GetContributorStatsSafeAsync(string repoName)
         {
             for (int attempt = 0; attempt < 6; attempt++)

@@ -11,12 +11,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(
+    options.UseNpgsql(
         builder.Configuration.GetConnectionString("DefaultConnection"),
-        sqlOptions => sqlOptions.EnableRetryOnFailure(
+        npgsqlOptions => npgsqlOptions.EnableRetryOnFailure(
             maxRetryCount: 5,
             maxRetryDelay: TimeSpan.FromSeconds(10),
-            errorNumbersToAdd: null)));
+            errorCodesToAdd: null)));
 builder.Services.AddHttpClient<IExperienceQAService, ExperienceQAService>();
 builder.Services.AddHttpClient<GitHubStatsService>(); 
 builder.Services.AddMemoryCache();
@@ -38,7 +38,7 @@ builder.Services.AddRazorPages(options =>
     options.Conventions.AllowAnonymousToPage("/AdminLogin");
 });
 
-
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -57,6 +57,15 @@ app.UseMiddleware<PageViewTrackingMiddleware>();
 app.MapRazorPages()
    .WithStaticAssets();
 
+app.MapPost("/api/ask", async (AskRequest req, IExperienceQAService qa) =>
+{
+    if (string.IsNullOrWhiteSpace(req.Question))
+        return Results.BadRequest(new { error = "Question is required." });
+
+    var answer = await qa.AskAsync(req.Question);
+    return Results.Ok(new { answer });
+})
+.RequireRateLimiting("ask-policy");
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -101,3 +110,5 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.Run();
+
+record AskRequest(string Question);

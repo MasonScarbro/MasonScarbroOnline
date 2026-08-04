@@ -8,20 +8,19 @@ services:
     depends_on:
       - db
     environment:
-      - ConnectionStrings__DefaultConnection=Server=db,1433;Database=PortfolioDb;User Id=sa;Password=${DB_PASSWORD};TrustServerCertificate=True;
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=PortfolioDb;Username=postgres;Password=${DB_PASSWORD}
       - Admin__PasswordHash=${ADMIN_PASSWORD_HASH}
-      - Groq__Key=${GROQKEY} 
+      - Groq__Key=${GROQKEY}
       - Github__Token=${GHTOKEN}
   db:
-    image: mcr.microsoft.com/mssql/server:2022-latest
+    image: postgres:16
     environment:
-      - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=${DB_PASSWORD}
-
+      - POSTGRES_DB=PortfolioDb
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
     ports:
-      - "1433:1433"
+      - "5432:5432"
     volumes:
-      - sqldata:/var/opt/mssql
+      - pgdata:/var/lib/postgresql/data
 
 volumes:
-  sqldata:
+  pgdata:
