@@ -6,12 +6,14 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=PortfolioDb;Username=postgres;Password=${DB_PASSWORD}
       - Admin__PasswordHash=${ADMIN_PASSWORD_HASH}
       - Groq__Key=${GROQKEY}
       - Github__Token=${GHTOKEN}
+
   db:
     image: postgres:16
     environment:
@@ -21,6 +23,11 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
 
 volumes:
   pgdata:
