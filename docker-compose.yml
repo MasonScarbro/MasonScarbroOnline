@@ -1,26 +1,38 @@
 services:
+  caddy:
+    image: caddy:2
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy-data:/data
+    depends_on:
+      - masonscarbroonline
+
   masonscarbroonline:
     build:
       context: .
       dockerfile: MasonScarbroOnline/Dockerfile
-    ports:
-      - "8080:8080"
-    depends_on:
-      db:
-        condition: service_healthy
+    expose:
+      - "8080"
     environment:
+      - ASPNETCORE_URLS=http://+:8080
       - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=PortfolioDb;Username=postgres;Password=${DB_PASSWORD}
       - Admin__PasswordHash=${ADMIN_PASSWORD_HASH}
       - Groq__Key=${GROQKEY}
       - Github__Token=${GHTOKEN}
+    depends_on:
+      db:
+        condition: service_healthy
 
   db:
     image: postgres:16
     environment:
       - POSTGRES_DB=PortfolioDb
       - POSTGRES_PASSWORD=${DB_PASSWORD}
-    ports:
-      - "5432:5432"
+    expose:
+      - "5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -31,3 +43,4 @@ services:
 
 volumes:
   pgdata:
+  caddy-data:
