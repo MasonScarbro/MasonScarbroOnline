@@ -1,43 +1,64 @@
 ﻿@model MasonScarbroOnline.Services.Github.GitHubStatsSnapshot
 
 <div class="reveal is-visible">
-    <div class="rounded-lg border border-gray-200 dark:border-white/10 bg-surface-light dark:bg-surface-dark p-6">
-        <p class="font-mono text-xs text-accent mb-4">// github, live</p>
-
-        @if (Model.TotalRepos == 0)
-        {
-            <p class="text-sm text-gray-500 dark:text-gray-400">GitHub stats unavailable right now.</p>
-        }
-        else
-        {
-            <div class="grid grid-cols-3 gap-4 text-center mb-6">
-                <div>
-                    <p class="font-display text-2xl font-bold text-gray-900 dark:text-white">@Model.TotalRepos</p>
-                    <p class="text-xs text-gray-500">repos</p>
-                </div>
-                <div>
-                    <p class="font-display text-2xl font-bold text-gray-900 dark:text-white">@Model.TotalCommits</p>
-                    <p class="text-xs text-gray-500">commits</p>
-                </div>
-                <div>
-                    <p class="font-display text-2xl font-bold text-gray-900 dark:text-white">@Model.LinesContributed.ToString("N0")</p>
-                    <p class="text-xs text-gray-500">lines contributed (All History)</p>
-                </div>
-            </div>
-
-            <div class="space-y-2">
-                @foreach (var (lang, pct) in Model.TopLanguages)
+    <div class="gradient-border">
+        <div class="bg-surface-light dark:bg-surface-dark rounded-[0.7rem] overflow-hidden p-8">
+            <div class="flex items-center justify-between mb-6">
+                <p class="font-mono text-xs text-accent tracking-wide">// github, live</p>
+                @if (Model.TotalRepos > 0)
                 {
-                    <div>
-                        <div class="flex justify-between text-xs font-mono text-gray-600 dark:text-gray-400 mb-1">
-                            <span>@lang</span><span>@pct%</span>
-                        </div>
-                        <div class="h-1.5 rounded-full bg-gray-100 dark:bg-white/10">
-                            <div class="h-1.5 rounded-full bg-accent" style="width: @(pct)%"></div>
-                        </div>
-                    </div>
+                    <p class="font-mono text-[10px] text-gray-400 dark:text-gray-500">
+                        synced @Model.GeneratedAt.ToString("MMM d, h:mm tt") UTC
+                    </p>
                 }
             </div>
-        }
+
+            @if (Model.TotalRepos == 0)
+            {
+                <p class="text-sm text-gray-500 dark:text-gray-400 text-center py-4">GitHub stats unavailable right now.</p>
+            }
+            else
+            {
+                <div class="grid grid-cols-3 gap-6 text-center mb-8">
+                    <div>
+                        <p class="font-display text-4xl font-bold text-gray-900 dark:text-white">@Model.TotalRepos</p>
+                        <p class="text-xs text-gray-500 mt-1">repos</p>
+                    </div>
+                    <div>
+                        <p class="font-display text-4xl font-bold text-gray-900 dark:text-white">@Model.TotalCommits.ToString("N0")</p>
+                        <p class="text-xs text-gray-500 mt-1">commits</p>
+                    </div>
+                    <div title="Raw diff additions across all commit history — includes lockfiles, generated code, and reformatting, not just hand-written lines">
+                        <p class="font-display text-4xl font-bold text-accent">@Model.LinesContributed.ToString("N0")</p>
+                        <p class="text-xs text-gray-500 mt-1">lines contributed*</p>
+                    </div>
+                </div>
+
+                <div class="space-y-3 max-w-md mx-auto">
+                    @{
+                        var colors = new[] { "#6366F1", "#F5B94A", "#22C55E", "#EC4899", "#38BDF8" };
+                    }
+                    @for (int i = 0; i < Model.TopLanguages.Count; i++)
+                    {
+                        var (lang, pct) = Model.TopLanguages[i];
+                        var color = colors[i % colors.Length];
+                        <div>
+                            <div class="flex items-center justify-between text-xs font-mono text-gray-600 dark:text-gray-400 mb-1">
+                                <span class="flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded-full" style="background-color: @color"></span>
+                                    @lang
+                                </span>
+                                <span>@pct%</span>
+                            </div>
+                            <div class="h-2 rounded-full bg-gray-100 dark:bg-white/10">
+                                <div class="h-2 rounded-full" style="width: @(pct)%; background-color: @color"></div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <p class="text-[10px] text-gray-400 dark:text-gray-500 text-center mt-6">*includes lockfiles, generated code, and reformatting</p>
+            }
+        </div>
     </div>
 </div>
