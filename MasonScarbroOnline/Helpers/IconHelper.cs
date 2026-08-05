@@ -37,7 +37,10 @@
             { "Elixir", "devicon-elixir-plain colored" },
             { "Clojure", "devicon-clojure-plain colored" },
             { "Blazor", "devicon-blazor-plain colored" },
-            { "OpenGl", "devicon-opengl-plain colored" }
+            { "OpenGl", "devicon-opengl-plain colored" },
+            { "Azure", "devicon-azure-plain-wordmark colored" },
+            { "F#", "devicon-fsharp-plain colored" },
+            { "Tensorflow", "devicon-tensorflow-original colored" }
         };
 
         public static string? GetIconClass(string techName) =>
