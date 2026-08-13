@@ -4,6 +4,7 @@ using MasonScarbroOnline.Models;
 using MasonScarbroOnline.Services;
 using MasonScarbroOnline.Services.Github;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using MasonScarbroOnline.Services.SynthLib;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
             errorCodesToAdd: null)));
 builder.Services.AddHttpClient<IExperienceQAService, ExperienceQAService>();
 builder.Services.AddHttpClient<GitHubStatsService>(); 
+builder.Services.AddSingleton<ChordStreamingService>();
 builder.Services.AddMemoryCache();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -48,6 +50,26 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseWebSockets();
+app.Map("/ws/chord/{chordName}", async context =>
+{
+    if (!context.WebSockets.IsWebSocketRequest)
+    {
+        context.Response.StatusCode = 400;
+        return;
+    }
+
+    var chordName = context.GetRouteValue("chordName") as string ?? "";
+    if (!ChordLibrary.Chords.TryGetValue(chordName, out var notes))
+    {
+        context.Response.StatusCode = 404;
+        return;
+    }
+
+    using var socket = await context.WebSockets.AcceptWebSocketAsync();
+    var chordStreamer = context.RequestServices.GetRequiredService<ChordStreamingService>();
+    await chordStreamer.PlayChordAsync(socket, notes, ct: context.RequestAborted);
+});
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthentication();

@@ -32,5 +32,25 @@ namespace MasonScarbroOnline.Services.SynthLib
             }
             return bytes;
         }
+
+        public async Task PlayChordAsync(
+            WebSocket socket,
+            IEnumerable<string> noteNames,
+            double durationSec = 2.6,
+            double decay = 0.996,
+            double brightness = 0.5,
+            CancellationToken ct = default)
+        {
+            var synth = new Synthesizer
+            {
+                SampleRate = 44100,
+                WaveForm = WaveForm.Pluck,
+                Decay = decay,
+                Brightness = brightness
+            };
+
+            var frequencies = noteNames.Select(NoteUtils.Frequency);
+            await StreamToWebSocketAsync(socket, synth, frequencies, durationSec, ct);
+        }
     }
 }

@@ -19,6 +19,7 @@
             {
                 return RenderPluck(freq, totalSamples);
             }
+            // else, render oscillator and apply envelope
             var samples = RenderOscillator(freq, totalSamples);
             var env = Envelope.Generate(totalSamples, SampleRate);
             for (int i = 0; i < totalSamples; i++)
@@ -26,6 +27,12 @@
             return samples;
         }
 
+        /// <summary>
+        /// Renders a plucked string sound using the Karplus-Strong algorithm.
+        /// </summary>
+        /// <param name="freq"></param>
+        /// <param name="totalSamples"></param>
+        /// <returns></returns>
         public float[] RenderPluck(double freq, int totalSamples)
         {
             int n = Math.Max(2, (int)Math.Round(SampleRate / freq));
@@ -45,6 +52,12 @@
             return output;
         }
 
+        /// <summary>
+        /// Renders a simple oscillator waveform (sine, square, sawtooth, triangle) at the given frequency and sample count.
+        /// </summary>
+        /// <param name="freq"></param>
+        /// <param name="totalSamples"></param>
+        /// <returns></returns>
         public float[] RenderOscillator(double freq, int totalSamples)
         {
             var output = new float[totalSamples];
@@ -66,6 +79,16 @@
             }
             return output;
         }
+
+        /// <summary>
+        /// Streams a chord of plucked string sounds using the Karplus-Strong algorithm, with optional strumming stagger.
+        /// </summary>
+        /// <param name="frequencies"></param>
+        /// <param name="durationSec"></param>
+        /// <param name="strumStaggerSec"></param>
+        /// <param name="chunkSamples"></param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
         public async IAsyncEnumerable<float[]> StreamChordAsync(
             IEnumerable<double> frequencies,
             double durationSec,
@@ -104,6 +127,30 @@
             }
         }
 
+        public float[] RenderChord(IEnumerable<double> frequencies, double durationSec, double strumStaggerSec = 0.0)
+        {
+            var freqList = new List<double>(frequencies);
+            int totalSamples = (int)(durationSec * SampleRate);
+            var mix = new float[totalSamples];
+
+            for (int i = 0; i < freqList.Count; i++)
+            {
+                int offset = (int)(i * strumStaggerSec * SampleRate);
+                double dur = durationSec - i * strumStaggerSec;
+                if (dur <= 0) continue;
+                var note = RenderNote(freqList[i], dur);
+
+                for (int n = 0; n < note.Length; n++)
+                {
+                    int idx = n + offset;
+                    if (idx < totalSamples)
+                        mix[idx] += note[n] * 0.5f;
+                }
+            }
+
+            Normalize(mix, 0.85f);
+            return mix;
+        }
         static void Normalize(float[] samples, float targetPeak)
         {
             float maxAbs = 0f;

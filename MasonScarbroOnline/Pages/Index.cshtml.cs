@@ -1,5 +1,6 @@
 using MasonScarbroOnline.Models;
 using MasonScarbroOnline.Services.Github;
+using MasonScarbroOnline.Services.SynthLib;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -10,10 +11,13 @@ namespace MasonScarbroOnline.Pages
     {
         private readonly Data.AppDbContext _context;
         private readonly GitHubStatsService _gitHubStats;
-        public IndexModel(Data.AppDbContext context, GitHubStatsService gitHubStats)
+
+        private readonly ChordStreamingService _chordStreamingService;
+        public IndexModel(Data.AppDbContext context, GitHubStatsService gitHubStats, ChordStreamingService chordStreamingService)
         {
             _context = context;
             _gitHubStats = gitHubStats;
+            _chordStreamingService = chordStreamingService;
         }
 
         public List<Project> Projects { get; set; } = new();
@@ -28,6 +32,8 @@ namespace MasonScarbroOnline.Pages
                 .OrderByDescending(e => e.StartDate)
                 .ToListAsync();
             GitHubStats = await _gitHubStats.GetSnapshotAsync();
+
+            
         }
     }
 }
